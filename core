@@ -17,11 +17,11 @@ install_v2() {
     os_arch=aarch64
   fi
 
-  log_debug "download docker-compose(${version}) from https://github.com/docker/compose/releases/download/${version}/docker-compose-${os_name}-${os_arch}"
+  log::debug "download docker-compose(${version}) from https://github.com/docker/compose/releases/download/${version}/docker-compose-${os_name}-${os_arch}"
 
-  curl -L "https://github.com/docker/compose/releases/download/${version}/docker-compose-${os_name}-${os_arch}" -o $PACKAGE_DOCKER_COMPOSE_BIN_TMP_PATH # >> $ZMICRO_LOG_COMMON_PATH 2>&1
+  curl -L "https://github.com/docker/compose/releases/download/${version}/docker-compose-${os_name}-${os_arch}" -o $PACKAGE_DOCKER_COMPOSE_BIN_TMP_PATH # >> $ZMICRO_log::COMMON_PATH 2>&1
   if [ "$?" != "0" ]; then
-    log_error "Failed to download docker-compose(${version})"
+    log::error "Failed to download docker-compose(${version})"
     exit 1
   fi
 }
@@ -32,15 +32,15 @@ install_v1() {
   local os_arch=$(uname -m)
 
   if [ "$os_arch" = "arm64" ]; then
-    log_error "${version} is not support current os"
+    log::error "${version} is not support current os"
     exit 1
   fi
 
-  log_debug "download docker-compose(${version}) from https://github.com/docker/compose/releases/download/${version}/docker-compose-${os_name}-${os_arch}"
+  log::debug "download docker-compose(${version}) from https://github.com/docker/compose/releases/download/${version}/docker-compose-${os_name}-${os_arch}"
 
-  curl -L "https://github.com/docker/compose/releases/download/${version}/docker-compose-${os_name}-${os_arch}" -o $PACKAGE_DOCKER_COMPOSE_BIN_TMP_PATH # >> $ZMICRO_LOG_COMMON_PATH 2>&1
+  curl -L "https://github.com/docker/compose/releases/download/${version}/docker-compose-${os_name}-${os_arch}" -o $PACKAGE_DOCKER_COMPOSE_BIN_TMP_PATH # >> $ZMICRO_log::COMMON_PATH 2>&1
   if [ "$?" != "0" ]; then
-    log_error "Failed to download docker-compose(${version})"
+    log::error "Failed to download docker-compose(${version})"
     exit 1
   fi
 }
@@ -54,15 +54,15 @@ install() {
   if [ "$(is_installed)" = "true" ]; then
     local current_version=$(docker-compose version --short)
     if [ "$current_version" != "$version" ]; then
-      log_warn "Docker Compose Installed(current: ${current_version}, want: ${version})"
+      log::warn "Docker Compose Installed(current: ${current_version}, want: ${version})"
     else
-      log_info "Docker Compose ${version} has already been installed"
+      log::info "Docker Compose ${version} has already been installed"
     fi
     # exit 0
     return
   fi
   
-  log_info "Install Docker Compose (${version}) ..."
+  log::info "Install Docker Compose (${version}) ..."
   
   echo $version | grep "v2" >> /dev/null 2>&1
   if [ "$?" != "0" ]; then
@@ -72,7 +72,7 @@ install() {
   fi
 
   if [ "$?" != "0" ]; then
-    log_error "Failed to download docker-compose(${version})"
+    log::error "Failed to download docker-compose(${version})"
     exit 1
   fi
 
@@ -82,11 +82,11 @@ install() {
   sudo mv $PACKAGE_DOCKER_COMPOSE_BIN_TMP_PATH $PACKAGE_DOCKER_COMPOSE_BIN_PATH
   
   if [ "$?" != "0" ]; then
-    log_error "Failed to download docker-compose(${version})"
+    log::error "Failed to download docker-compose(${version})"
     exit 0
   fi
 
-  log_success "Success to install Docker Compose CLI ."
+  log::success "Success to install Docker Compose CLI ."
 }
 
 remove() {
