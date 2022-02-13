@@ -36,9 +36,9 @@ install_v1() {
     exit 1
   fi
 
-  log::debug "download docker-compose(${version}) from https://github.com/docker/compose/releases/download/${version}/docker-compose-${os_name}-${os_arch}"
+  log::debug "download docker-compose(${version}) from https://github.com/docker/compose/releases/download/${version:1}/docker-compose-${os_name}-${os_arch}"
 
-  curl -L "https://github.com/docker/compose/releases/download/${version}/docker-compose-${os_name}-${os_arch}" -o $PACKAGE_DOCKER_COMPOSE_BIN_TMP_PATH # >> $ZMICRO_log::COMMON_PATH 2>&1
+  curl -L "https://github.com/docker/compose/releases/download/${version:1}/docker-compose-${os_name}-${os_arch}" -o $PACKAGE_DOCKER_COMPOSE_BIN_TMP_PATH # >> $ZMICRO_log::COMMON_PATH 2>&1
   if [ "$?" != "0" ]; then
     log::error "Failed to download docker-compose(${version})"
     exit 1
@@ -57,9 +57,9 @@ install() {
       log::warn "Docker Compose Installed(current: ${current_version}, want: ${version})"
     else
       log::info "Docker Compose ${version} has already been installed"
+      # exit 0
+      return
     fi
-    # exit 0
-    return
   fi
   
   log::info "Install Docker Compose (${version}) ..."
