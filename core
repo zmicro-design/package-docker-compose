@@ -53,6 +53,13 @@ install() {
 
   if [ "$(is_installed)" = "true" ]; then
     local current_version=$(docker-compose version --short)
+
+    # FIX v prefix
+    echo $current_version | grep "v" >> /dev/null 2>&1
+    if [ "$?" != "0" ]; then
+      current_version="v${current_version}"
+    fi
+
     if [ "$current_version" != "$version" ]; then
       log::warn "Docker Compose Installed(current: ${current_version}, want: ${version})"
     else
