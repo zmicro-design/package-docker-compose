@@ -1,2 +1,2 @@
-VERSION=v2.0.1
+VERSION=v2.0.2
 DESCRIPTION="Package Docker Compose"
