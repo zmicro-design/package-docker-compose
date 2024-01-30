@@ -17,9 +17,14 @@ install_v2() {
     os_arch=aarch64
   fi
 
-  log::debug "download docker-compose(${version}) from https://github.com/docker/compose/releases/download/${version}/docker-compose-${os_name}-${os_arch}"
+  local url="https://github.com/docker/compose/releases/download/${version}/docker-compose-${os_name}-${os_arch}" -o $PACKAGE_DOCKER_COMPOSE_BIN_TMP_PATH # >> $ZMICRO_log::COMMON_PATH 2>&1
+  if [ -n "$DOCKER_COMPOSE_BIN_URL" ]; then
+    url=$DOCKER_COMPOSE_BIN_URL
+  fi
 
-  os::curl -L "https://github.com/docker/compose/releases/download/${version}/docker-compose-${os_name}-${os_arch}" -o $PACKAGE_DOCKER_COMPOSE_BIN_TMP_PATH # >> $ZMICRO_log::COMMON_PATH 2>&1
+  log::info "[$(timestamp)] download docker-compose(${version}) from ${url}"
+
+  os::curl -L "${url}"
   if [ "$?" != "0" ]; then
     log::error "Failed to download docker-compose(${version})"
     exit 1
@@ -36,7 +41,7 @@ install_v1() {
     exit 1
   fi
 
-  log::debug "download docker-compose(${version}) from https://github.com/docker/compose/releases/download/${version:1}/docker-compose-${os_name}-${os_arch}"
+  log::info "[$(timestamp)] download docker-compose(${version}) from https://github.com/docker/compose/releases/download/${version:1}/docker-compose-${os_name}-${os_arch}"
 
   os::curl -L "https://github.com/docker/compose/releases/download/${version:1}/docker-compose-${os_name}-${os_arch}" -o $PACKAGE_DOCKER_COMPOSE_BIN_TMP_PATH # >> $ZMICRO_log::COMMON_PATH 2>&1
   if [ "$?" != "0" ]; then
